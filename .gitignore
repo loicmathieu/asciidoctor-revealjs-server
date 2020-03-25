@@ -23,3 +23,10 @@
 hs_err_pid*
 
 *.iml
+
+example/.idea/
+example/src/main/asciidoc/test.svg
+example/src/main/asciidoc/.asciidoctor
+example/target/
+
+example/src/main/asciidoc/slides.html

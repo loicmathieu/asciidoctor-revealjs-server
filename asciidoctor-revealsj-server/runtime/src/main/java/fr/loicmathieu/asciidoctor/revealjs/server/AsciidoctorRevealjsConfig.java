@@ -14,7 +14,7 @@ public class AsciidoctorRevealjsConfig {
     /**
      * The path to the slides adoc file.
      */
-    @ConfigItem(defaultValue = "../src/main/asciidoc/slides.adoc")
+    @ConfigItem(defaultValue = "src/main/asciidoc/slides.adoc")
     public String slidesPath;
 
     /**
