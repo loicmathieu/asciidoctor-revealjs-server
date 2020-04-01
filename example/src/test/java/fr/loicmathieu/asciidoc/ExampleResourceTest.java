@@ -18,7 +18,7 @@ public class ExampleResourceTest {
                 .body(containsString("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/reveal.js@3.9.2/css/theme/moon.css\" id=\"theme\">"))
                 .body(containsString("<h1>Reveal.js Sample document</h1>"))
                 .body(containsString("<h2>Slide 2 with some code</h2>"))
-                .body(containsString("<script src=\"browserWatch.js\"></script>"));
+                .body(containsString("openWebSocket();"));
     }
 
 }
