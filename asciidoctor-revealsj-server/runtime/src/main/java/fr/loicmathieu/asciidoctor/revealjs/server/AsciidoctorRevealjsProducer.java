@@ -9,6 +9,7 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.time.Duration;
 
 @ApplicationScoped
@@ -19,7 +20,7 @@ public class AsciidoctorRevealjsProducer {
     @Produces
     @Dependent
     @Default
-    AsciidoctorRevealjs asciidocRevealjs(){
+    AsciidoctorRevealjs asciidocRevealjs() throws IOException {
         String slidesPath = ConfigProvider.getConfig().getValue("quarkus.asciidoctor.revealjs.slides-path", String.class);
         String revealJsDir = ConfigProvider.getConfig().getValue("quarkus.asciidoctor.revealjs.reveal-js-dir", String.class);
         String revealJsTheme = ConfigProvider.getConfig().getValue("quarkus.asciidoctor.revealjs.reveal-js-theme", String.class);
