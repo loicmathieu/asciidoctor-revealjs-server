@@ -23,6 +23,15 @@
             <artifactId>quarkus-arc-deployment</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-undertow-websockets-deployment</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-vertx-deployment</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>fr.loicmathieu.asciidoc</groupId>
             <artifactId>asciidoctor-revealsj-server</artifactId>
             <version>${project.version}</version>

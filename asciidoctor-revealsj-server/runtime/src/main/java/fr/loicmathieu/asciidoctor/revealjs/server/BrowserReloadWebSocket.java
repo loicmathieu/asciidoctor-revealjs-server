@@ -1,11 +1,10 @@
-package fr.loicmathieu.asciidoc;
+package fr.loicmathieu.asciidoctor.revealjs.server;
 
 import io.quarkus.vertx.ConsumeEvent;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
-import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
@@ -14,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @ServerEndpoint("/browserWatch/socket")
 @ApplicationScoped
-public class LiveReloadWebSocket {
+public class BrowserReloadWebSocket {
     Map<String, Session> sessions = new ConcurrentHashMap<>();
 
     @OnOpen
@@ -36,7 +35,7 @@ public class LiveReloadWebSocket {
     }
 
     @ConsumeEvent("browser-live-reload")
-    void broadcast(String message) {
+    public void broadcast(String message) {
         sessions.values().forEach(session -> {
             session.getAsyncRemote().sendObject(message, result ->  {
                 System.out.println("Sending messages to " + session.getId());
