@@ -2,19 +2,17 @@ package fr.loicmathieu.asciidoc;
 
 import fr.loicmathieu.asciidoctor.revealjs.server.AsciidoctorRevealjs;
 import fr.loicmathieu.asciidoctor.revealjs.server.AsciidoctorRevealjsWatcher;
-import io.quarkus.arc.Unremovable;
+import io.quarkus.vertx.web.Route;
+import io.vertx.core.http.HttpMethod;
+import io.vertx.ext.web.RoutingContext;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
-
-@Path("/")
+@ApplicationScoped
 public class ExampleResource {
 
     @Inject
@@ -34,14 +32,13 @@ public class ExampleResource {
 
     @PreDestroy
     void stopWatcher() {
-        System.out.println("Stoping the AsciidoctorRevealjsWatcher");
+        System.out.println("Stopping the AsciidoctorRevealjsWatcher");
         asciidocWatcher.endWatchFileChange();
     }
 
-
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    public String hello() throws IOException {
-        return asciidocRevealjs.generateSlides();
+    @Route(path = "/", methods = HttpMethod.GET)
+    public void renderSlides(RoutingContext rc) throws IOException {
+        rc.response().putHeader("Content-Type", "text/html");
+        rc.response().end(asciidocRevealjs.generateSlides());
     }
 }
