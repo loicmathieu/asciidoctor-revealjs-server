@@ -1,6 +1,5 @@
 package fr.loicmathieu.asciidoctor.revealjs.server;
 
-import io.quarkus.arc.Unremovable;
 import io.vertx.mutiny.core.eventbus.EventBus;
 import org.eclipse.microprofile.config.ConfigProvider;
 
@@ -30,7 +29,6 @@ public class AsciidoctorRevealjsProducer {
     @Produces
     @Dependent
     @Default
-    @Unremovable
     AsciidoctorRevealjsWatcher asciidocWatcher(){
         String slidesPath = ConfigProvider.getConfig().getValue("quarkus.asciidoctor.revealjs.slides-path", String.class);
         Duration watchPeriod = ConfigProvider.getConfig().getValue("quarkus.asciidoctor.revealjs.watch-period", Duration.class);

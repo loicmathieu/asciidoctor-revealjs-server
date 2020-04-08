@@ -17,12 +17,13 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 public class AsciidoctorRevealjs {
 
     private String slidePath;
-    private String htmlPath;
+    private String htmlFileName;
+    private Path htmlPath;
     private String revealJsDir;
     private String revealJsTheme;
 
@@ -30,7 +31,12 @@ public class AsciidoctorRevealjs {
 
     AsciidoctorRevealjs(String slidePath, String revealJsDir, String revealJsTheme) throws IOException {
         this.slidePath = slidePath;
-        this.htmlPath = slidePath.substring(0, slidePath.lastIndexOf('.') ) + ".html";
+        this.htmlFileName = slidePath.substring(0, slidePath.lastIndexOf('.') ) + ".html";
+        if(this.htmlFileName.indexOf('/') != -1){
+            // remove the part before '/' as we only want the name of the
+            this.htmlFileName = this.htmlFileName.substring(this.htmlFileName.lastIndexOf('/') + 1);
+        }
+        this.htmlPath = Files.createTempDirectory("slides-");
         this.revealJsDir = revealJsDir;
         this.revealJsTheme = revealJsTheme;
 
@@ -67,10 +73,11 @@ public class AsciidoctorRevealjs {
                 )
                 .get();
 
-        asciidoctor.convertFile(new File(this.slidePath), options);
+        // set the destination path to a temporal directory
+        options.setToDir(this.htmlPath.toString());
 
-        java.nio.file.Path path = Paths.get(this.htmlPath);
-        String html = new String(Files.readAllBytes(path));
+        asciidoctor.convertFile(new File(this.slidePath), options);
+        String html = new String(Files.readAllBytes(this.htmlPath.resolve(this.htmlFileName)));
 
         // add livereload websocket
         // FIXME add this only in dev mode
