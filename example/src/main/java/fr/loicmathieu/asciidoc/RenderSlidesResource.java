@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 
 @ApplicationScoped
-public class ExampleResource {
+public class RenderSlidesResource {
 
     @Inject
     AsciidoctorRevealjs asciidocRevealjs;
@@ -21,13 +21,10 @@ public class ExampleResource {
     @Inject
     AsciidoctorRevealjsWatcher asciidocWatcher;
 
-    private Thread watcherThread;
-
     @PostConstruct
     void startWatcher(){
         System.out.println("Starting the AsciidoctorRevealjsWatcher");
-        watcherThread = new Thread(() -> asciidocWatcher.watchFileChange());
-        watcherThread.start();
+        asciidocWatcher.startWatchFileChange();
     }
 
     @PreDestroy

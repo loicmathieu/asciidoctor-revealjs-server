@@ -7,10 +7,10 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
 
 @QuarkusTest
-public class ExampleResourceTest {
+public class RenderSlidesResourceTest {
 
     @Test
-    public void testHelloEndpoint() {
+    public void testRenderSlidesEndpoint() {
         given()
             .when().get("/")
             .then()

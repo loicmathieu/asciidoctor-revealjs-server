@@ -17,13 +17,15 @@ public class AsciidoctorRevealjsWatcher {
     private String slidePath;
     private Duration watchPeriod;
 
+    private Thread watcherThread;
+
     AsciidoctorRevealjsWatcher(EventBus bus, String slidePath,  Duration watchPeriod){
         this.bus = bus;
         this.slidePath = slidePath;
         this.watchPeriod = watchPeriod;
     }
 
-    public void watchFileChange() {
+    void watchFileChange() {
         Path slidesPath = Paths.get(this.slidePath);
 
         try {
@@ -46,5 +48,12 @@ public class AsciidoctorRevealjsWatcher {
 
     public void endWatchFileChange() {
         this.watchForChange = false;
+    }
+
+    public void startWatchFileChange() {
+        this.watchForChange = true;
+
+        watcherThread = new Thread(() -> this.watchFileChange());
+        watcherThread.start();
     }
 }
