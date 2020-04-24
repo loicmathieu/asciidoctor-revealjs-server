@@ -19,10 +19,13 @@ public class AsciidoctorRevealjsWatcher {
 
     private Thread watcherThread;
 
-    AsciidoctorRevealjsWatcher(EventBus bus, String slidePath,  Duration watchPeriod){
-        this.bus = bus;
+    AsciidoctorRevealjsWatcher(String slidePath,  Duration watchPeriod){
         this.slidePath = slidePath;
         this.watchPeriod = watchPeriod;
+    }
+
+    void setBus(EventBus bus){
+        this.bus = bus;
     }
 
     void watchFileChange() {

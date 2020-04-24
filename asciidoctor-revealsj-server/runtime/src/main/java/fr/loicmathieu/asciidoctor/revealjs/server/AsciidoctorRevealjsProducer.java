@@ -16,22 +16,26 @@ public class AsciidoctorRevealjsProducer {
     @Inject
     EventBus bus;
 
+    private volatile AsciidoctorRevealjs asciidoctorRevealjs;
+    private volatile AsciidoctorRevealjsWatcher asciidoctorRevealjsWatcher;
+
     @Produces
     @Dependent
     @Default
     AsciidoctorRevealjs asciidocRevealjs() throws IOException {
-        String slidesPath = ConfigProvider.getConfig().getValue("quarkus.asciidoctor.revealjs.slides-path", String.class);
-        String revealJsDir = ConfigProvider.getConfig().getValue("quarkus.asciidoctor.revealjs.reveal-js-dir", String.class);
-        String revealJsTheme = ConfigProvider.getConfig().getValue("quarkus.asciidoctor.revealjs.reveal-js-theme", String.class);
-        return new AsciidoctorRevealjs(slidesPath, revealJsDir, revealJsTheme);
+        return this.asciidoctorRevealjs;
     }
 
     @Produces
     @Dependent
     @Default
     AsciidoctorRevealjsWatcher asciidocWatcher(){
-        String slidesPath = ConfigProvider.getConfig().getValue("quarkus.asciidoctor.revealjs.slides-path", String.class);
-        Duration watchPeriod = ConfigProvider.getConfig().getValue("quarkus.asciidoctor.revealjs.watch-period", Duration.class);
-        return new AsciidoctorRevealjsWatcher(bus, slidesPath, watchPeriod);
+        this.asciidoctorRevealjsWatcher.setBus(this.bus);//lazily set the bus
+        return this.asciidoctorRevealjsWatcher;
+    }
+
+    public void initialize(AsciidoctorRevealjs asciidoctorRevealjs, AsciidoctorRevealjsWatcher asciidoctorRevealjsWatcher) {
+        this.asciidoctorRevealjs = asciidoctorRevealjs;
+        this.asciidoctorRevealjsWatcher = asciidoctorRevealjsWatcher;
     }
 }
