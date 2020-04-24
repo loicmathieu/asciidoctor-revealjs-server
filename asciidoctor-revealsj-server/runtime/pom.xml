@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>fr.loicmathieu.asciidoc</groupId>
-        <artifactId>asciidoctor-revealsj-server-parent</artifactId>
+        <artifactId>asciidoctor-revealjs-server-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>asciidoctor-revealsj-server</artifactId>
+    <artifactId>asciidoctor-revealjs-server</artifactId>
     <name>Asciidoc Revealjs Server - Runtime</name>
 
     <properties>

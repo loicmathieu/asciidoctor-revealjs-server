@@ -35,7 +35,7 @@
   <dependencies>
     <dependency>
       <groupId>fr.loicmathieu.asciidoc</groupId>
-      <artifactId>asciidoctor-revealsj-server</artifactId>
+      <artifactId>asciidoctor-revealjs-server</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>

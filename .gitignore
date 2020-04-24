@@ -24,6 +24,8 @@ hs_err_pid*
 
 *.iml
 
+.idea/
+
 example/.idea/
 example/src/main/asciidoc/test.svg
 example/src/main/asciidoc/.asciidoctor
