@@ -48,23 +48,22 @@ Then add the `asciidoctor-revealjs-server` extension to your `pom.xml`.
     </dependency>
 ```
 
-Then, replace the content of `RenderSlidesResource` with this one
+Then, delete the `RenderSlidesResource` and create a `RenderSlideApplication` that will setup a Vert.x handler to serve the rendered slides.
 
 ```java
 import fr.loicmathieu.asciidoctor.revealjs.server.AsciidoctorRevealjs;
+import fr.loicmathieu.asciidoctor.revealjs.server.AsciidoctorRevealjsHandler;
 import fr.loicmathieu.asciidoctor.revealjs.server.AsciidoctorRevealjsWatcher;
-import io.quarkus.vertx.web.Route;
-import io.vertx.core.http.HttpMethod;
-import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.Router;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import java.io.IOException;
 
 @ApplicationScoped
-public class RenderSlidesResource {
+public class RenderSlideApplication {
 
     @Inject
     AsciidoctorRevealjs asciidocRevealjs;
@@ -72,25 +71,26 @@ public class RenderSlidesResource {
     @Inject
     AsciidoctorRevealjsWatcher asciidocWatcher;
 
+    // this will start the watcher that trigger browser live reload
     @PostConstruct
     void startWatcher(){
         asciidocWatcher.startWatchFileChange();
     }
 
+    // this will end the watcher that trigger browser live reload
     @PreDestroy
     void stopWatcher() {
         asciidocWatcher.endWatchFileChange();
     }
 
-    @Route(path = "/", methods = HttpMethod.GET)
-    public void renderSlides(RoutingContext rc) throws IOException {
-        rc.response().putHeader("Content-Type", "text/html");
-        rc.response().end(asciidocRevealjs.generateSlides());
+    // this will create a route on '/' that will serve the rendered slides
+    public void init(@Observes Router router) throws Exception {
+        router.route("/").blockingHandler(AsciidoctorRevealjsHandler.create(asciidocRevealjs));
     }
 }
 ```
 
 Finally, add a `src/main/asciidoc/slides.adoc` file with the content of your slides.
 
-After launching Quarkus with `mvn clean quarkus:dev` you can open you browser at http://localhost:8080, 
-and your slides will be rendered. Each time you will modify the `slides.adoc` file your browser will be reloaded automatically. 
+After launching Quarkus with `mvn clean quarkus:dev` you can open you browser at http://localhost:8080, and your slides will be rendered. 
+Each time you will modify the `slides.adoc` file your browser will be reloaded automatically. 
