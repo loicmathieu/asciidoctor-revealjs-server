@@ -1,6 +1,7 @@
 package fr.loicmathieu.asciidoctor.revealjs.server;
 
 import io.quarkus.vertx.ConsumeEvent;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.OnClose;
@@ -14,23 +15,24 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint("/browserWatch/socket")
 @ApplicationScoped
 public class BrowserReloadWebSocket {
+    private static final Logger LOGGER = Logger.getLogger(BrowserReloadWebSocket.class);
     Map<String, Session> sessions = new ConcurrentHashMap<>();
 
     @OnOpen
     public void onOpen(Session session) {
-        System.out.println("Registering sessions " + session.getId());
+        LOGGER.debugf("Registering sessions %s", session.getId());
         sessions.put(session.getId(), session);
     }
 
     @OnClose
     public void onClose(Session session) {
-        System.out.println("Removing sessions " + session.getId());
+        LOGGER.debugf("Removing sessions %s", session.getId());
         sessions.remove(session.getId());
     }
 
     @OnError
     public void onError(Session session, Throwable throwable) {
-        System.out.println("Removing sessions " + session.getId() + " for error " + throwable.getMessage());
+        LOGGER.debugf("Removing sessions %s for error %s", session.getId(), throwable.getMessage());
         sessions.remove(session.getId());
     }
 
@@ -38,9 +40,9 @@ public class BrowserReloadWebSocket {
     public void broadcast(String message) {
         sessions.values().forEach(session -> {
             session.getAsyncRemote().sendObject(message, result ->  {
-                System.out.println("Sending messages to " + session.getId());
+                LOGGER.debugf("Sending messages to %s", session.getId());
                 if (result.getException() != null) {
-                    System.out.println("Unable to send message: " + result.getException());
+                    LOGGER.debugf("Unable to send message: %s", result.getException());
                 }
             });
         });

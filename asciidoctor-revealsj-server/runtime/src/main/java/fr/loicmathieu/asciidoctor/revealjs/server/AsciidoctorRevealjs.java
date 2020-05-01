@@ -5,6 +5,7 @@ import org.asciidoctor.AttributesBuilder;
 import org.asciidoctor.Options;
 import org.asciidoctor.OptionsBuilder;
 import org.asciidoctor.SafeMode;
+import org.jboss.logging.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -20,6 +21,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class AsciidoctorRevealjs {
+
+    private static final Logger LOGGER = Logger.getLogger(BrowserReloadWebSocket.class);
 
     private String slidePath;
     private String htmlFileName;
@@ -44,7 +47,7 @@ public class AsciidoctorRevealjs {
     }
 
     private void init() throws IOException {
-        System.out.println("Load browserWatch.js");
+        LOGGER.info("Load browserWatch.js");
         try (InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("browserWatch.js");
              Reader reader = new BufferedReader(new InputStreamReader(is, Charset.forName(StandardCharsets.UTF_8.name())))) {
             StringBuilder browserWatchBuilder = new StringBuilder();
@@ -57,7 +60,7 @@ public class AsciidoctorRevealjs {
     }
 
     public String generateSlides() throws IOException {
-        System.out.println("Generating slides from Asciidoctor");
+        LOGGER.info("Generating slides from Asciidoctor");
         long start = System.currentTimeMillis();
         Asciidoctor asciidoctor = Asciidoctor.Factory.create();
         asciidoctor.requireLibrary("asciidoctor-revealjs");
@@ -84,7 +87,7 @@ public class AsciidoctorRevealjs {
         Document sourcePage = Jsoup.parse(html);
         sourcePage.body().append("<script>\n" + browserWatch + "\n</script>");
 
-        System.out.println("Slides generated in " + (System.currentTimeMillis() - start) + "ms");
+        LOGGER.infof("Slides generated in %sms", (System.currentTimeMillis() - start));
 
         return sourcePage.outerHtml();
     }

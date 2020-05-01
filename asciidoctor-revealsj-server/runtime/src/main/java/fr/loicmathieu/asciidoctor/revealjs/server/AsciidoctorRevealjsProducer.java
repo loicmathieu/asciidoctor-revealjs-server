@@ -1,7 +1,6 @@
 package fr.loicmathieu.asciidoctor.revealjs.server;
 
 import io.vertx.mutiny.core.eventbus.EventBus;
-import org.eclipse.microprofile.config.ConfigProvider;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
@@ -9,7 +8,6 @@ import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import java.io.IOException;
-import java.time.Duration;
 
 @ApplicationScoped
 public class AsciidoctorRevealjsProducer {

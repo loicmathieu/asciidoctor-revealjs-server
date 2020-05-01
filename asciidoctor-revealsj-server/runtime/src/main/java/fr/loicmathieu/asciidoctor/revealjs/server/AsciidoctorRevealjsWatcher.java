@@ -2,6 +2,7 @@ package fr.loicmathieu.asciidoctor.revealjs.server;
 
 
 import io.vertx.mutiny.core.eventbus.EventBus;
+import org.jboss.logging.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +12,8 @@ import java.nio.file.attribute.FileTime;
 import java.time.Duration;
 
 public class AsciidoctorRevealjsWatcher {
+    private static final Logger LOGGER = Logger.getLogger(AsciidoctorRevealjsWatcher.class);
+
     private boolean watchForChange = true;
     private FileTime lastModifiedTime;
     private EventBus bus;
@@ -50,10 +53,12 @@ public class AsciidoctorRevealjsWatcher {
     }
 
     public void endWatchFileChange() {
+        LOGGER.info("Stopping the AsciidoctorRevealjsWatcher");
         this.watchForChange = false;
     }
 
     public void startWatchFileChange() {
+        LOGGER.info("Starting the AsciidoctorRevealjsWatcher");
         this.watchForChange = true;
 
         watcherThread = new Thread(() -> this.watchFileChange());
