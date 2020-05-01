@@ -22,7 +22,7 @@ public class AsciidoctorRevealjsWatcher {
 
     private Thread watcherThread;
 
-    AsciidoctorRevealjsWatcher(String slidePath,  Duration watchPeriod){
+    public AsciidoctorRevealjsWatcher(String slidePath,  Duration watchPeriod){
         this.slidePath = slidePath;
         this.watchPeriod = watchPeriod;
     }

@@ -6,7 +6,6 @@ import fr.loicmathieu.asciidoctor.revealjs.server.AsciidoctorRevealjsWatcher;
 import io.vertx.ext.web.Router;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -20,16 +19,10 @@ public class RenderSlideApplication {
     @Inject
     AsciidoctorRevealjsWatcher asciidocWatcher;
 
-    // this will start the watcher that trigger browser live reload
+    // this will start the watcher that trigger browser live reload, it will be automatically stopped at application shutdown
     @PostConstruct
     void startWatcher(){
         asciidocWatcher.startWatchFileChange();
-    }
-
-    // this will end the watcher that trigger browser live reload
-    @PreDestroy
-    void stopWatcher() {
-        asciidocWatcher.endWatchFileChange();
     }
 
     // this will create a route on '/' that will serve the rendered slides

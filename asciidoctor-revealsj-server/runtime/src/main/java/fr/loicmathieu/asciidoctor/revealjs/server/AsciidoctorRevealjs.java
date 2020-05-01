@@ -32,7 +32,7 @@ public class AsciidoctorRevealjs {
 
     private String browserWatch;
 
-    AsciidoctorRevealjs(String slidePath, String revealJsDir, String revealJsTheme) throws IOException {
+    public AsciidoctorRevealjs(String slidePath, String revealJsDir, String revealJsTheme) throws IOException {
         this.slidePath = slidePath;
         this.htmlFileName = slidePath.substring(0, slidePath.lastIndexOf('.') ) + ".html";
         if(this.htmlFileName.indexOf('/') != -1){

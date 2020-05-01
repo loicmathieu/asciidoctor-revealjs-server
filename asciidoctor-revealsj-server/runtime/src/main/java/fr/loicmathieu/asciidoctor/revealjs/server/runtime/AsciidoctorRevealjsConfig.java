@@ -1,4 +1,4 @@
-package fr.loicmathieu.asciidoctor.revealjs.server;
+package fr.loicmathieu.asciidoctor.revealjs.server.runtime;
 
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;

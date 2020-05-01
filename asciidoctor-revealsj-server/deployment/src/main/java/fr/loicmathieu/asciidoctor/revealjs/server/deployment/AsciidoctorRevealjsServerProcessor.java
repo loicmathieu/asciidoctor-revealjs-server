@@ -1,7 +1,7 @@
 package fr.loicmathieu.asciidoctor.revealjs.server.deployment;
 
-import fr.loicmathieu.asciidoctor.revealjs.server.AsciidoctorRevealjsConfig;
-import fr.loicmathieu.asciidoctor.revealjs.server.AsciidoctorRevealjsRecorder;
+import fr.loicmathieu.asciidoctor.revealjs.server.runtime.AsciidoctorRevealjsConfig;
+import fr.loicmathieu.asciidoctor.revealjs.server.runtime.AsciidoctorRevealjsRecorder;
 import io.quarkus.arc.deployment.BeanContainerBuildItem;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.annotations.ExecutionTime;
@@ -23,8 +23,8 @@ class AsciidoctorRevealjsServerProcessor {
     @BuildStep
     @Record(ExecutionTime.RUNTIME_INIT)
     void build(AsciidoctorRevealjsRecorder recorder, BeanContainerBuildItem beanContainerBuildItem,
-               AsciidoctorRevealjsConfig configuration) throws IOException {
+               AsciidoctorRevealjsConfig configuration, ShutdownContextBuildItem shutdownContext) throws IOException {
 
-        recorder.configureAsciidoctorRevealjs(beanContainerBuildItem.getValue(), configuration);
+        recorder.configureAsciidoctorRevealjs(beanContainerBuildItem.getValue(), configuration, shutdownContext);
     }
 }
